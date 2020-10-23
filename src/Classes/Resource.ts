@@ -29,22 +29,32 @@ class Resource implements GeneralRequestHandlers {
     }
   };
   findOne = (req: Request, res: Response) => {
-    // FindOne Logic here
-    const finalDataToSend = {
-      message: "Found one",
-      property: { name: "lorem", value: "Ipsum" },
-    };
-    const data = new ResponseStructure(finalDataToSend, false);
-    this.sendResponse(data, res);
+    try {
+      // FindOne Logic here
+      const finalDataToSend = {
+        message: "Found one",
+        property: { name: "lorem", value: "Ipsum" },
+      };
+      const data = new ResponseStructure(finalDataToSend, false);
+      this.sendResponse(data, res);
+    } catch (error) {
+      const data = new ResponseStructure([], true, error.message);
+      this.sendResponse(data, res);
+    }
   };
   updateOne = (req: Request, res: Response) => {
-    // UpdateOne Logic here
-    const finalDataToSend = {
-      message: "updated",
-      updatedData: ["Lorem", "Ipsum"],
-    };
-    const data = new ResponseStructure(finalDataToSend, false);
-    this.sendResponse(data, res);
+    try {
+      // UpdateOne Logic here
+      const finalDataToSend = {
+        message: "updated",
+        updatedData: ["Lorem", "Ipsum"],
+      };
+      const data = new ResponseStructure(finalDataToSend, false);
+      this.sendResponse(data, res);
+    } catch (error) {
+      const data = new ResponseStructure([], true, error.message);
+      this.sendResponse(data, res);
+    }
   };
   deleteOne = (req: Request, res: Response) => {
     try {
