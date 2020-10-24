@@ -52,7 +52,8 @@ const errorResponse = new ResponseStructure([], true, errorMessage);
 
 ### How to create new Custom Resourse Handlers
 
-- To create custom Resource handlers you must first write the handler's logic as a function expression (Async Arrow function).
+- To create custom Resource handlers you must first write the **handler's logic as a function expression** (Async Arrow function).
+- This **enables you to test your handle logics separately** in a TDD
 - A handler logic should return a `Promise<ResponseStructure>` type.
 - The below Example code contains a Resource named user with two custom handlers `customHandler` and `sendEmail`.
 - **A Resource handler is any function inside your Resource class which calls this.handlerBuilder() at the end.**
