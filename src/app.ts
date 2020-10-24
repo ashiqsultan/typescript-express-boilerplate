@@ -17,9 +17,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-// // Enable CORS
+//Enable CORS
 app.use(cors(config.corsOptions));
 
+// Application route Handler
 app.use("/v1", apiVersion1);
 
 // 404 Handler
@@ -31,7 +32,7 @@ app.use(function (req, res, next) {
   res.status(status).send(errorResponse);
 });
 
-// Server Error Handler
+// Server Error 500 Handler
 // Calling next(error) in any of the routes will call this function
 app.use(
   (

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import user from "./controllers/user";
-import contact from "./controllers/contact";
+import user from "./resources/user";
+import contact from "./resources/contact";
 
 let router = Router();
 // User Routes

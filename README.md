@@ -10,9 +10,10 @@
 - All client consumable responses sent from the server should be an instance of ResponseStructure
 
 **Example Response**
+Successful Response
 
 ```
-Successful Response
+const okResponse = new ResponseStructure(responseData, false);
 {
     response: [
         {"item":"carrot","price":50},
@@ -20,7 +21,13 @@ Successful Response
     ],
     isError: false,
 }
+```
+
 Error Response
+
+```
+const errorResponse = new ResponseStructure([], true, errorMessage);
+
 {
     response: [],
     isError: true,
@@ -29,8 +36,8 @@ Error Response
 ```
 
 - While consuming the API in frontend or anywhere, always check for isError value,
-- If its true then read error
-- Make sure to pass error if error value is true
+- If its true then read errorMessage
+- Make sure to pass errorMessage if error value is true
 
 ## Resource
 
@@ -45,20 +52,27 @@ Error Response
 
 ### How to create new Custom Resourse Handlers
 
-- To create custom Resource handlers you must first write the handler's logic as a function expression (Async Arrow function). Lets call this function `customLogic()`
-- A Resource handler is any function inside your custom resource class which calls this.handlerBuilder() at the end.
-- `this.handlerBuilder("handlerName", customLogic, res, next);`
+- To create custom Resource handlers you must first write the handler's logic as a function expression (Async Arrow function).
+- A handler logic should return a `Promise<ResponseStructure>` type.
+- The below Example code contains a Resource named user with two custom handlers `customHandler` and `sendEmail`.
+- **A Resource handler is any function inside your Resource class which calls this.handlerBuilder() at the end.**
+
+**Example**
 
 ```
+const customLogic = async (): Promise<ResponseStructure> => {
+    return new ResponseStructure(toSend, false);
+}
+
 class User extends Resource {
   customHandler = (req: Request, res: Response, next: NextFunction) => {
       const handlerName = "Custom Handler";
-      const customLogic = (): Promise<ResponseStructure>  => customMethod(req, res, next);
+      const logic = (): Promise<ResponseStructure>  => customLogic(req, res, next);
       this.handlerBuilder(handlerName, logic, res, next);
   };
   sendEmail = (req: Request, res: Response, next: NextFunction) => {
       const handlerName = "User send Email Handler";
-      const uploadLogic = (): Promise<ResponseStructure> => util.email(req,res);
+      const logic = (): Promise<ResponseStructure> => util.email(req,res);
       this.handlerBuilder(handlerName, uploadLogic, res, next);
 }
 
@@ -71,5 +85,4 @@ router.post("/user/send-email", user.sendEmail); // Executes sendEmail function
 
 - **Note**: The Logic function being passed to the Handler class should return a Promise of type ResponseStructure `Promise<ResponseStructure>`. Refer ResponseStructure and default handlers on how to implement it.
 - **Note** For default handlers, make sure to pass the data in the `request.body.data` with the field names same as the names given in Mongoose Model
-
-- All response other than 404 (Not Found) and 500 (Internal Server Error) should be sent only using sendResponse() Method in Handler class.
+- **Note** All response other than 404 (Not Found) and 500 (Internal Server Error) should be sent only as Handler.sendResponse().
