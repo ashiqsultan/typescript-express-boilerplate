@@ -8,7 +8,7 @@ router.get("/user", user.findOne);
 router.post("/user", user.createOne);
 router.put("/user", user.updateOne);
 router.delete("/user", user.deleteOne);
-router.get("/user/custom", user.customMethod);
+router.post("/user/custom", user.customCreate);
 // Contact Routes
 router.get("/contact", contact.findOne);
 router.post("/contact", contact.createOne);
