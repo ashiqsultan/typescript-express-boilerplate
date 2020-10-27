@@ -1,14 +1,23 @@
 import { Request, Response, NextFunction } from "express";
 import { Handler, Logic } from "../Handler";
 import defaultLogics from "./defaultLogics/index";
+import mongoose, { Model, Document } from "mongoose";
 
-class Resource {
+interface IResource {
+  resourceName: string;
+  mongooseModel: Model<Document>;
+}
+
+class Resource implements IResource {
   /* TODO
    * limit property (No of items returned from default find)
    * response display properties array (Model fields which should and should not be included in the find)
    */
 
-  constructor(readonly resourceName: string) {}
+  constructor(
+    readonly resourceName: string,
+    public mongooseModel: Model<Document>
+  ) {}
 
   /* handlerBuilder is a function which constructs the resouce handlers
    * Any function inside the Resource Class which will be used as a handler for a route should call the handlerBuilder() function at the end.
@@ -27,49 +36,35 @@ class Resource {
   // createOne Handler
   createOne = (req: Request, res: Response, next: NextFunction) => {
     const handlerName = "Create One";
-    const logic = () => defaultLogics.createOne(req, res);
+    const logic = () => defaultLogics.createOne(req, res, this.mongooseModel);
     this.handlerBuilder(handlerName, logic, res, next);
   };
 
   // findOne Handler
   findOne = async (req: Request, res: Response, next: NextFunction) => {
     const handlerName = "findOne";
-    const logic = () => defaultLogics.findOne(req, res);
+    const logic = () => defaultLogics.findOne(req, res, this.mongooseModel);
     this.handlerBuilder(handlerName, logic, res, next);
   };
 
   // updateOne Handler
   updateOne = async (req: Request, res: Response, next: NextFunction) => {
     const handlerName = "updateOne";
-    const logic = () => defaultLogics.updateOne(req, res);
+    const logic = () => defaultLogics.updateOne(req, res, this.mongooseModel);
     this.handlerBuilder(handlerName, logic, res, next);
   };
 
   // deleteOne Handler
   deleteOne = async (req: Request, res: Response, next: NextFunction) => {
     const handlerName = "deleteOne";
-    const logic = () => defaultLogics.deleteOne(req, res);
+    const logic = () => defaultLogics.deleteOne(req, res, this.mongooseModel);
     this.handlerBuilder(handlerName, logic, res, next);
   };
 
-  // findMany Handler
-  findMany = async (req: Request, res: Response, next: NextFunction) => {
-    const handlerName = "findMany";
-    const logic = () => defaultLogics.findMany(req, res);
-    this.handlerBuilder(handlerName, logic, res, next);
-  };
-
-  // updateMany Handler
-  updateMany = async (req: Request, res: Response, next: NextFunction) => {
-    const handlerName = "updateMany";
-    const logic = () => defaultLogics.updateMany(req, res);
-    this.handlerBuilder(handlerName, logic, res, next);
-  };
-
-  // deleteMany Handler
-  deleteMany = async (req: Request, res: Response, next: NextFunction) => {
-    const handlerName = "deleteMany";
-    const logic = () => defaultLogics.deleteMany(req, res);
+  // findAll Handler
+  findAll = async (req: Request, res: Response, next: NextFunction) => {
+    const handlerName = "findAll";
+    const logic = () => defaultLogics.findAll(req, res, this.mongooseModel);
     this.handlerBuilder(handlerName, logic, res, next);
   };
 }

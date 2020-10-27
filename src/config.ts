@@ -1,15 +1,15 @@
 import ConfigType from "./Classes/ConfigType";
 const development: ConfigType = {
-  port: String(process.env.PORT || 8000),
-  dbConnectionString: String(process.env.DB_CONNECTION_STRING),
-  secretKey: String(process.env.SECRET_KEY),
+  port: process.env.PORT || "8000",
+  dbConnectionString: process.env.DB_CONNECTION_STRING,
+  secretKey: process.env.SECRET_KEY,
   corsOptions: { origin: "*" },
 };
 
 const production: ConfigType = {
-  port: String(process.env.PORT || 8000),
-  dbConnectionString: String(process.env.DB_CONNECTION_STRING),
-  secretKey: String(process.env.SECRET_KEY),
+  port: process.env.PORT || "8000",
+  dbConnectionString: process.env.DB_CONNECTION_STRING,
+  secretKey: process.env.SECRET_KEY,
   corsOptions: { origin: "*" },
 };
 

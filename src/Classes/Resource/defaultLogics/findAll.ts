@@ -1,20 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import ResponseStructure from "../../ResponseStructure";
 import { Model, Document } from "mongoose";
-const deleteOne = async (
+const findAll = async (
   req: Request,
   res: Response,
   dbModel: Model<Document>
 ): Promise<ResponseStructure> => {
   try {
-    // Update one by ID
-    let id = req.params.id;
-    const deleteOperation = await dbModel.findByIdAndDelete(id).exec();
-    const response = new ResponseStructure({ deleteOperation }, false);
+    // FindOne Logic here
+    const allData = await dbModel.find({}).exec();
+    const response = new ResponseStructure(allData, false);
     return response;
   } catch (error) {
     throw error;
   }
 };
 
-export default deleteOne;
+export default findAll;

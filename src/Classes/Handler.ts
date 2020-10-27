@@ -1,14 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import ResponseStructure from "./ResponseStructure";
 
-interface Logic {
-  /* Handler Logic function.
-   * This is the main function which contains a logic for a route.
-   * This function should return Promise<ResponseStructure>
-   * This enforces the handler logic functions to be written in async mode
-   * */
-  (err?: any): Promise<ResponseStructure>;
-}
+/**
+ * Handler Logic function.
+ * This is the main function which contains a logic for a route.
+ * This function should return Promise<ResponseStructure>
+ * This enforces the handler logic functions to be written in async mode
+ * */
+// interface Logic {
+//   (err?: any): Promise<ResponseStructure>;
+// }
+type Logic = () => Promise<ResponseStructure>;
 
 class Handler {
   constructor(

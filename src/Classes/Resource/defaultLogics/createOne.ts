@@ -1,20 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 import ResponseStructure from "../../ResponseStructure";
-
+import { Model, Document } from "mongoose";
 const createOne = async (
   req: Request,
-  res: Response
+  res: Response,
+  dbModel: Model<Document>
 ): Promise<ResponseStructure> => {
   try {
-    // Create Logic here
-    // Test
-    // throw new Error("Intentional messup");
-    const finalDataToSend = { message: "createOne function executed" };
-    const data = new ResponseStructure(finalDataToSend, false);
-    return data;
+    // TODO
+    // Make sure whats not in the model if passed in the body is not being saved
+    let dataToBeCreated = req.body.data;
+    let newDocument = new dbModel(dataToBeCreated);
+    const createdData = await newDocument.save();
+    const response = new ResponseStructure(createdData, false);
+    return response;
   } catch (error) {
-    const data = new ResponseStructure([], true, error.message);
-    return data;
+    throw error;
   }
 };
 export default createOne;
