@@ -5,9 +5,13 @@ import apiVersion1 from "./api/v1/routes";
 import config from "./config";
 import morgan from "morgan";
 import ResponseStructure from "./Classes/ResponseStructure";
+import dbConnect from "./util/dbConnect";
 
 // Create Express server
 const app = express();
+
+// Connect to MongoDB
+dbConnect(config.dbConnectionString);
 
 // Set PORT
 app.set("port", config.port);

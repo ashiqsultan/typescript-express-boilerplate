@@ -1,21 +1,23 @@
 import { Request, Response, NextFunction } from "express";
 import ResponseStructure from "../../ResponseStructure";
-
+import { Model, Document } from "mongoose";
 const UpdateOne = async (
   req: Request,
-  res: Response
+  res: Response,
+  dbModel: Model<Document>
 ): Promise<ResponseStructure> => {
   try {
-    // UpdateOne Logic here
-    const finalDataToSend = {
-      message: "updated",
-      updatedData: ["Lorem", "Ipsum"],
-    };
-    const data = new ResponseStructure(finalDataToSend, false);
-    return data;
+    // Update one by ID
+    let id = req.params.id;
+    let dataToBeUpdated = req.body.data;
+    console.log(JSON.stringify(dataToBeUpdated));
+    const updateDocument = await dbModel
+      .findByIdAndUpdate(id, { ...dataToBeUpdated }, { new: true })
+      .exec();
+    const response = new ResponseStructure({ updateDocument }, false);
+    return response;
   } catch (error) {
-    const data = new ResponseStructure([], true, error.message);
-    return data;
+    throw error;
   }
 };
 

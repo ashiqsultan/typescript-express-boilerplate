@@ -6,7 +6,7 @@
 
 ## ResponseStructure
 
-- This is the JSON structure
+- This is a JSON structure
 - All client consumable responses sent from the server should be an instance of ResponseStructure
 
 **Example Response**
@@ -41,14 +41,38 @@ const errorResponse = new ResponseStructure([], true, errorMessage);
 
 ## Resource
 
-**Definition**: A resource is a logical entity in which CRUD operations are executed. You can also think of resource as the base route.
+**Definition**: A resource is a logical business entity for which Database Models are maintained and CRUD operations are executed. Resource as the base routes.
 
-- To create a resource simply create a new class and extend the Resource Class
+- To create a resource simply create a new class with resource name you want and extend the Resource Class
+- Give you resource a name
+- Pass the Mongoose Model
+**Example**
+```
+
+class MyResource extends Resource {}
+const myResource = new MyResource("resourceName", mongooseModel);
+
+class User extends Resource {}
+
+const user = new User("user", UserModel);
+```
 
 ## Handlers
 
 - Handlers contain Business logic for your Resource Routes
-- The Resource class comes with basic CURD operations. Also called default handlers for a Resource
+- The Resource class comes with basic CURD operations. Also called default handlers for a Resource. They are
+
+  - createOne
+  - findOne
+  - updateOne
+  - deleteOne
+  - findAll
+
+- You can simply overwrite these methods inside your extended resource class if you want.
+
+## Custom Resourse Handlers
+
+Custom Resource handlers are the logics other than CRUD, it can be anything. **A Resource handler or Custom Resource Handler is any function inside your Resource class which calls `this.handlerBuilder()` at the end of the function.**
 
 ### How to create new Custom Resourse Handlers
 
@@ -56,7 +80,6 @@ const errorResponse = new ResponseStructure([], true, errorMessage);
 - This **enables you to test your handle logics separately** in a TDD
 - A handler logic should return a `Promise<ResponseStructure>` type.
 - The below Example code contains a Resource named user with two custom handlers `customHandler` and `sendEmail`.
-- **A Resource handler is any function inside your Resource class which calls this.handlerBuilder() at the end.**
 
 **Example**
 
