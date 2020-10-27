@@ -1,3 +1,11 @@
+A simple Express, TypeScript, MongoDB Boiler plate
+Comes with Basic crud operations
+### TODO
+- FindAll return limit for a resource
+- populate query (Avoid direct querying)
+- Option to hide certain fields returned by passing an array to the Resource class 
+
+# Docs
 ## Custom Types
 
 - ResponseStructure
